@@ -33,7 +33,7 @@ case $1 in
     clone)
         for project in $PROJECTS; do
             if [ ! -d "minion-$project" ]; then
-                git clone "https://github.com/st3fan/minion-$project" || exit 1
+                git clone --recursive "https://github.com/st3fan/minion-$project" || exit 1
             fi
         done
         ;;
@@ -57,5 +57,10 @@ case $1 in
     run-task-engine)
         source env/bin/activate
         minion-core/task-engine/scripts/minion-task-engine
+        ;;
+    run-frontend)
+        source env/bin/activate
+        (cd minion-frontend && python manage.py syncdb) || exit 1
+        (cd minion-frontend && python manage.py runserver 127.0.0.1:8000) || exit 1
         ;;
 esac
