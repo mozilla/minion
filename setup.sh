@@ -9,7 +9,7 @@ set -x
 # checkout the depend projects and to set them up in a virtualenv.
 #
 
-PROJECTS="core nmap-plugin zap-plugin skipfish-plugin garmr-plugin"
+PROJECTS="core nmap-plugin zap-plugin skipfish-plugin garmr-plugin frontend"
 
 if [ "$(id -u)" == "0" ]; then
     echo "abort: cannot run as root."
