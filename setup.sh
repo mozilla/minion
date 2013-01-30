@@ -9,7 +9,7 @@ set -x
 # checkout the depend projects and to set them up in a virtualenv.
 #
 
-PROJECTS="core nmap-plugin"
+PROJECTS="core nmap-plugin zap-plugin skipfish-plugin garmr-plugin"
 
 if [ "$(id -u)" == "0" ]; then
     echo "abort: cannot run as root."
@@ -46,7 +46,7 @@ case $1 in
         source env/bin/activate
         for project in $PROJECTS; do
             if [ -x "minion-$project/setup.sh" ]; then
-				(cd "minion-$project"; "./setup.sh" develop || exit 1)
+				(cd "minion-$project"; "./setup.sh" develop) || exit 1
             fi
         done
         ;;
