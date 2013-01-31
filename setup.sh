@@ -61,6 +61,6 @@ case $1 in
     run-frontend)
         source env/bin/activate
         (cd minion-frontend && python manage.py syncdb) || exit 1
-        (cd minion-frontend && python manage.py runserver 127.0.0.1:8000) || exit 1
+        (cd minion-frontend && python manage.py runserver 0.0.0.0:8000) || exit 1
         ;;
 esac
