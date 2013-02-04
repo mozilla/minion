@@ -31,10 +31,10 @@ If you work on Ubuntu, install the following packages:
 
     $ sudo apt-get install git build-essential python-virtualenv python-dev mysql-server libmysqlclient-dev
 
-If you work on Fedora, install the following packages:
+If you work on Fedora 18, install the following packages:
 
     $ sudo yum groupinstall 'Development Tools'
-    $ sudo yum install python-devel mysql-devel
+    $ sudo yum install mysql mysql-server python-devel python-virtualenv mysql-devel
 
 You can make Minion ready for development by following these steps:
 
