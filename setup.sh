@@ -17,11 +17,11 @@ if [ "$(id -u)" == "0" ]; then
 fi
 
 if [ ! `which virtualenv` ]; then
-    echi "abort: no virtualenv found"
+    echo "abort: no virtualenv found"
 fi
 
 if [ ! `which python2.7` ]; then
-    echi "abort: no python2.7 found"
+    echo "abort: no python2.7 found"
 fi
 
 if [ ! -z "$VIRTUAL_ENV" ]; then
