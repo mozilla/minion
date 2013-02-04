@@ -30,12 +30,14 @@ Whatever platform you use, you will need the following tools:
 If you work on Ubuntu, install the following packages:
 
     $ sudo apt-get install git build-essential python-virtualenv python-dev mysql-server libmysqlclient-dev
+    $ sudo apt-get install nmap skipfish
 
 If you work on Fedora 18, install the following packages:
 
     $ sudo yum groupinstall 'Development Tools'
     $ sudo yum install mysql mysql-server python-devel python-virtualenv mysql-devel
-
+    $ sudo yum install nmap skipfish
+    
 You can make Minion ready for development by following these steps:
 
     $ git clone https://github.com/st3fan/minion
