@@ -10,12 +10,14 @@ About this project
 
 This repository is an 'umbrella' project that simply ties together the separate projects that Minion needs.
 
-* minion-core
-* minion-frontend
-* minion-zap-plugin
-* minion-garmr-plugin
-* minion-skipfish-plugin
-* minion-nmap-plugin
+* https://github.com/mozilla/minion-core
+* https://github.com/mozilla/minion-frontend
+* https://github.com/mozilla/minion-zap-plugin
+* https://github.com/mozilla/minion-garmr-plugin
+* https://github.com/mozilla/minion-skipfish-plugin
+* https://github.com/mozilla/minion-nmap-plugin
+
+This project contains a script that will check out the above projects. See below in the setup instructions.
 
 Setting up a development environment
 ------------------------------------
