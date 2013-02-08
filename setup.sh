@@ -63,4 +63,7 @@ case $1 in
         (cd minion-frontend && python manage.py syncdb) || exit 1
         (cd minion-frontend && python manage.py runserver 0.0.0.0:8000) || exit 1
         ;;
+    *)
+        echo "Usage : $0 <clone|develop|run-plugin-service|run-task-engine|run-frontend>"
+        ;;
 esac
