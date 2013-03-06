@@ -42,7 +42,7 @@ If you work on Fedora 18, install the following packages:
     
 You can make Minion ready for development by following these steps:
 
-    $ git clone https://github.com/st3fan/minion
+    $ git clone https://github.com/mozilla/minion
     $ cd minion
     $ ./setup.sh clone
     $ ./setup.sh develop
