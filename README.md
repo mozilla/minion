@@ -103,7 +103,7 @@ To start the Plugin Service:
 Start the frontend in a new shell window:
 
     $ cd minion
-    $ ./setup.py run-frontend
+    $ ./setup.sh run-frontend
     Validating models...
 
     0 errors found
