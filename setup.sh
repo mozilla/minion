@@ -47,7 +47,7 @@ case $1 in
             fi
         done
         ;;
-    run-backend-api)
+    run-backend)
         source env/bin/activate
         minion-backend/scripts/minion-backend-api
         ;;
@@ -68,6 +68,6 @@ case $1 in
         minion-backend/scripts/minion-plugin-worker
         ;;
     *)
-        echo "Usage : $0 <clone|setup|run-backend|run-frontend>"
+        echo "Usage : $0 <clone|setup|run-backend|run-frontend|run-plugin-worker|run-scan-worker|run-state-worker>"
         ;;
 esac
