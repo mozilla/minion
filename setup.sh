@@ -1,15 +1,13 @@
 #!/bin/bash
 
-set -x
-
 #
-# make.sh <clone|setup|run-plugin-service|run-task-engine>
+# make.sh <clone|setup|run-frontend|run-backend|run-scan-worker|run-state-worker|run-plugin-worker>
 #
 # This script is really just for development only. It makes it easier to
 # checkout the depend projects and to set them up in a virtualenv.
 #
 
-PROJECTS="core nmap-plugin zap-plugin skipfish-plugin garmr-plugin frontend"
+PROJECTS="backend-api frontend nmap-plugin zap-plugin skipfish-plugin garmr-plugin"
 
 if [ "$(id -u)" == "0" ]; then
     echo "abort: cannot run as root."
@@ -37,7 +35,7 @@ case $1 in
             fi
         done
         ;;
-    develop)
+    setup)
         # Create our virtualenv
         if [ ! -d "env" ]; then
             virtualenv -p python2.7 --no-site-packages env || exit 1
@@ -50,20 +48,27 @@ case $1 in
             fi
         done
         ;;
-    run-plugin-service)
+    run-backend-api)
         source env/bin/activate
-        minion-core/plugin-service/scripts/minion-plugin-service
-        ;;
-    run-task-engine)
-        source env/bin/activate
-        minion-core/task-engine/scripts/minion-task-engine
+        minion-backend/scripts/minion-backend-api
         ;;
     run-frontend)
         source env/bin/activate
-        (cd minion-frontend && python manage.py syncdb) || exit 1
-        (cd minion-frontend && python manage.py runserver 0.0.0.0:8000) || exit 1
+        minion-frontend/scripts/minion-frontend runserver
+        ;;
+    run-scan-worker)
+        source env/bin/activate
+        minion-backend/scripts/minion-scan-worker
+        ;;
+    run-state-worker)
+        source env/bin/activate
+        minion-backend/scripts/minion-state-worker
+        ;;
+    run-plugin-worker)
+        source env/bin/activate
+        minion-backend/scripts/minion-plugin-worker
         ;;
     *)
-        echo "Usage : $0 <clone|develop|run-plugin-service|run-task-engine|run-frontend>"
+        echo "Usage : $0 <clone|setup|run-backend|run-frontend>"
         ;;
 esac
