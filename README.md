@@ -12,7 +12,7 @@ This repository is an 'umbrella' project that simply ties together the separate 
 
 The following two projects are the bare minimum needed to get Minion up and running:
 
-* https://github.com/mozilla/minion-core
+* https://github.com/mozilla/minion-backend
 * https://github.com/mozilla/minion-frontend
 
 The following projects are optional plugins for minion that add more functionality or wrap existing tools:
@@ -54,7 +54,7 @@ You can make Minion ready for development by following these steps:
     $ git clone https://github.com/mozilla/minion
     $ cd minion
     $ ./setup.sh clone
-    $ ./setup.sh develop
+    $ ./setup.sh setup
 
 Running Minion in Development Mode
 ----------------------------------
