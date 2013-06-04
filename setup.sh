@@ -6,8 +6,7 @@
 # This script is really just for development only. It makes it easier to
 # checkout the depend projects and to set them up in a virtualenv.
 #
-
-PROJECTS="backend-api frontend nmap-plugin zap-plugin skipfish-plugin garmr-plugin"
+PROJECTS="backend frontend"
 
 if [ "$(id -u)" == "0" ]; then
     echo "abort: cannot run as root."
