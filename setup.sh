@@ -49,7 +49,7 @@ case $1 in
         ;;
     run-backend)
         source env/bin/activate
-        minion-backend/scripts/minion-backend-api
+        minion-backend/scripts/minion-backend-api runserver
         ;;
     run-frontend)
         source env/bin/activate
