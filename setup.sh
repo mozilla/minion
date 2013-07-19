@@ -30,7 +30,11 @@ case $1 in
     clone)
         for project in $PROJECTS; do
             if [ ! -d "minion-$project" ]; then
-                git clone --recursive "https://github.com/mozilla/minion-$project" || exit 1
+                if [ -z "$2" ]; then
+	            git clone --recursive "https://github.com/mozilla/minion-$project" || exit 1
+                else
+                    git clone --recursive "https://github.com/mozilla/minion-$project" "$2/minion-$project" || exit 1
+                fi
             fi
         done
         ;;
