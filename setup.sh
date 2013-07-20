@@ -41,7 +41,11 @@ case $1 in
     develop)
         # Create our virtualenv
         if [ ! -d "env" ]; then
-            virtualenv -p python2.7 --no-site-packages env || exit 1
+            if [ -z "$2" ]; then
+                virtualenv -p python2.7 --no-site-packages env || exit 1
+            else
+                virtualenv -p python2.7 --no-site-packages "$2/env" || exit 1
+            fi
         fi
         # Activate our virtualenv
         source env/bin/activate
@@ -49,6 +53,11 @@ case $1 in
             if [ -x "minion-$project/setup.sh" ]; then
 				(cd "minion-$project"; "./setup.sh" develop) || exit 1
             fi
+        done
+        ;;
+    install)
+        for project in $PROJECTS; do
+            (cd "minion-$project"; "sudo" "python" "setup.py" "install") || exit 1
         done
         ;;
     run-backend)
