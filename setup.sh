@@ -31,14 +31,14 @@ case $1 in
         for project in $PROJECTS; do
             if [ ! -d "minion-$project" ]; then
                 if [ -z "$2" ]; then
-	            git clone --recursive "https://github.com/mozilla/minion-$project" || exit 1
+                    git clone --recursive "https://github.com/mozilla/minion-$project" || exit 1
                 else
                     git clone --recursive "https://github.com/mozilla/minion-$project" "$2/minion-$project" || exit 1
                 fi
             fi
         done
         ;;
-    setup)
+    develop)
         # Create our virtualenv
         if [ ! -d "env" ]; then
             virtualenv -p python2.7 --no-site-packages env || exit 1
