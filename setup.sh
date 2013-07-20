@@ -26,38 +26,36 @@ if [ ! -z "$VIRTUAL_ENV" ]; then
     exit 1
 fi
 
+if [ -z "$2" ]; then
+    ROOT="."
+else
+    ROOT="$2"
+fi
+
 case $1 in
     clone)
         for project in $PROJECTS; do
             if [ ! -d "minion-$project" ]; then
-                if [ -z "$2" ]; then
-                    git clone --recursive "https://github.com/mozilla/minion-$project" || exit 1
-                else
-                    git clone --recursive "https://github.com/mozilla/minion-$project" "$2/minion-$project" || exit 1
-                fi
+                git clone --recursive "https://github.com/mozilla/minion-$project" "$ROOT" || exit 1
             fi
         done
         ;;
     develop)
         # Create our virtualenv
         if [ ! -d "env" ]; then
-            if [ -z "$2" ]; then
-                virtualenv -p python2.7 --no-site-packages env || exit 1
-            else
-                virtualenv -p python2.7 --no-site-packages "$2/env" || exit 1
-            fi
+                virtualenv -p python2.7 --no-site-packages "$ROOT/env" || exit 1
         fi
         # Activate our virtualenv
         source env/bin/activate
         for project in $PROJECTS; do
             if [ -x "minion-$project/setup.sh" ]; then
-				(cd "minion-$project"; "./setup.sh" develop) || exit 1
+				(cd "$ROOT/minion-$project"; "./setup.sh" develop) || exit 1
             fi
         done
         ;;
     install)
         for project in $PROJECTS; do
-            (cd "minion-$project"; "sudo" "python" "setup.py" "install") || exit 1
+            (cd "$ROOT/minion-$project"; "sudo" "python" "setup.py" "install") || exit 1
         done
         ;;
     run-backend)
