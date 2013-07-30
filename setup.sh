@@ -79,6 +79,6 @@ case $1 in
         minion-backend/scripts/minion-plugin-worker
         ;;
     *)
-        echo "Usage : $0 <clone|setup|run-backend|run-frontend|run-plugin-worker|run-scan-worker|run-state-worker>"
+        echo "Usage : $0 <clone|install|develop|run-backend|run-frontend|run-plugin-worker|run-scan-worker|run-state-worker>"
         ;;
 esac

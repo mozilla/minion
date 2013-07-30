@@ -54,7 +54,10 @@ You can make Minion ready for development by following these steps:
     $ git clone https://github.com/mozilla/minion
     $ cd minion
     $ ./setup.sh clone
-    $ ./setup.sh setup
+    $ ./setup.sh develop
+
+You can also run ``./setup.sh install`` if you choose to make Minion available to the global Python interpreter.
+This option will run ``python setup.py install`` instead of ``python setup.py develop``.
 
 Running Minion in Development Mode
 ----------------------------------
