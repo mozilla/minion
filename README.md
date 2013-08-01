@@ -40,7 +40,7 @@ For task distribution and data storage, Minion uses the following services:
 
 If you work on Ubuntu, install the following packages:
 
-    $ sudo apt-get install git build-essential python-virtualenv python-dev rabbitmq-server mongodb-server
+    $ sudo apt-get install git build-essential python-virtualenv python-dev rabbitmq-server mongodb-server curl libcurl4-openssl-dev
     $ sudo apt-get install nmap skipfish
 
 If you work on Fedora 18, install the following packages:
