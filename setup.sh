@@ -60,11 +60,11 @@ case $1 in
         ;;
     run-backend)
         source env/bin/activate
-        minion-backend/scripts/minion-backend-api runserver
+        minion-backend/scripts/minion-backend-api -d -r
         ;;
     run-frontend)
         source env/bin/activate
-        minion-frontend/scripts/minion-frontend runserver
+        minion-frontend/scripts/minion-frontend -d -r
         ;;
     run-scan-worker)
         source env/bin/activate
