@@ -46,7 +46,7 @@ If you work on Ubuntu, install the following packages:
 If you work on Fedora 19, install the following packages:
 
     $ sudo yum groupinstall 'Development Tools'
-    $ sudo yum install  python-devel python-virtualenv mongodb-server mongodb-devel rabbitmq-server
+    $ sudo yum install  python-devel python-virtualenv mongodb-server mongodb-devel rabbitmq-server libcurl-devel
     $ sudo yum install nmap skipfish
     
 You can make Minion ready for development by following these steps:
