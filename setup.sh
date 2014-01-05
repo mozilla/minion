@@ -29,7 +29,8 @@ fi
 if [ -z "$2" ]; then
     ROOT="."
 else
-    ROOT="$2"
+    # remove trailing slash
+    ROOT="${2%/}"
 fi
 
 case $1 in
@@ -46,9 +47,9 @@ case $1 in
                 virtualenv -p python2.7 --no-site-packages "$ROOT/env" || exit 1
         fi
         # Activate our virtualenv
-        source env/bin/activate
+        source "$ROOT/env/bin/activate"
         for project in $PROJECTS; do
-            if [ -x "minion-$project/setup.sh" ]; then
+            if [ -x "$ROOT/minion-$project/setup.sh" ]; then
 				(cd "$ROOT/minion-$project"; "./setup.sh" develop) || exit 1
             fi
         done
@@ -59,24 +60,24 @@ case $1 in
         done
         ;;
     run-backend)
-        source env/bin/activate
+        source "$ROOT/env/bin/activate"
         minion-backend/scripts/minion-backend-api -d -r
         ;;
     run-frontend)
-        source env/bin/activate
+        source "$ROOT/env/bin/activate"
         minion-frontend/scripts/minion-frontend -d -r
         ;;
     run-scan-worker)
-        source env/bin/activate
-        minion-backend/scripts/minion-scan-worker
+        source "$ROOT/env/bin/activate"
+        $ROOT/minion-backend/scripts/minion-scan-worker
         ;;
     run-state-worker)
-        source env/bin/activate
-        minion-backend/scripts/minion-state-worker
+        source "$ROOT/env/bin/activate"
+        $ROOT/minion-backend/scripts/minion-state-worker
         ;;
     run-plugin-worker)
-        source env/bin/activate
-        minion-backend/scripts/minion-plugin-worker
+        source "$ROOT/env/bin/activate"
+        $ROOT/minion-backend/scripts/minion-plugin-worker
         ;;
     *)
         echo "Usage : $0 <clone|install|develop|run-backend|run-frontend|run-plugin-worker|run-scan-worker|run-state-worker>"
