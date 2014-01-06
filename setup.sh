@@ -26,14 +26,31 @@ if [ ! -z "$VIRTUAL_ENV" ]; then
     exit 1
 fi
 
-if [ -z "$2" ]; then
-    ROOT="."
-else
-    # remove trailing slash
-    ROOT="${2%/}"
-fi
+# Default optional argument values
+ADDRESS="0.0.0.0"
+ROOT="."
 
-case $1 in
+# shift all option arugments to the front so getopts can parse the options
+COMMAND=$1
+shift
+
+while getopts ":a:p:x:" opt; do
+    case "$opt" in
+        a) ADDRESS=${OPTARG};;
+        p) PORT=${OPTARG};;
+        x) ROOT=${OPTARG%/};;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            exit 1
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            exit 1
+            ;;
+    esac
+done
+
+case $COMMAND in
     clone)
         for project in $PROJECTS; do
             if [ ! -d "minion-$project" ]; then
@@ -61,11 +78,17 @@ case $1 in
         ;;
     run-backend)
         source "$ROOT/env/bin/activate"
-        minion-backend/scripts/minion-backend-api -d -r
+        if [ -z "$PORT" ]; then
+            PORT="8383"
+        fi
+        minion-backend/scripts/minion-backend-api "-a" $ADDRESS "-p" $PORT -r -d
         ;;
     run-frontend)
         source "$ROOT/env/bin/activate"
-        minion-frontend/scripts/minion-frontend -d -r
+        if [ -z "$PORT" ]; then
+            PORT="8080"
+        fi
+        minion-frontend/scripts/minion-frontend "-a" $ADDRESS "-p" $PORT -r -d
         ;;
     run-scan-worker)
         source "$ROOT/env/bin/activate"
