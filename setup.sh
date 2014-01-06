@@ -26,13 +26,28 @@ if [ ! -z "$VIRTUAL_ENV" ]; then
     exit 1
 fi
 
-if [ -z "$2" ]; then
-    ROOT="."
-else
-    # remove trailing slash
-    ROOT="${2%/}"
-fi
+# Default optional argument values
+a="0.0.0.0"
+ROOT="."
 
+while getopts ":a:p:x:" opt; do
+    case "$opt" in
+        a) a=${OPTARG};;
+        p) p=${OPTARG};;
+        x) ROOT=${OPTARG%/};;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            exit 1
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            exit 1
+            ;;
+    esac
+done
+
+# move the last argument to first positional argument
+shift $(($# - 1))
 case $1 in
     clone)
         for project in $PROJECTS; do
@@ -61,11 +76,17 @@ case $1 in
         ;;
     run-backend)
         source "$ROOT/env/bin/activate"
-        minion-backend/scripts/minion-backend-api -d -r
+        if [ -z "$p" ]; then
+            p="8383"
+        fi
+        minion-backend/scripts/minion-backend-api "-a" $a "-p" $p -r -d
         ;;
     run-frontend)
         source "$ROOT/env/bin/activate"
-        minion-frontend/scripts/minion-frontend -d -r
+        if [ -z "$p" ]; then
+            p="8080"
+        fi
+        minion-frontend/scripts/minion-frontend "-a" $a "-p" $p -r -d
         ;;
     run-scan-worker)
         source "$ROOT/env/bin/activate"
