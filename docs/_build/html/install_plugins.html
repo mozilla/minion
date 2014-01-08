@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installing Plugins &mdash; Minion 0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/mozilla.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Minion 0.3 documentation" href="index.html" /> 
+  </head>
+  <body><a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
+
+    <div class="document">
+  <div class="documentwrapper">
+    
+    <div class="sphinxsidebar">
+        <nav>
+        <h2><a href="index.html">Minion</a></h2>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure_minion.html">Configure Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_frontend.html">Using Frontend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install_guide.html">Install Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inside_minion.html">Inside Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing_plugins.html">Developing Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_setup_sh.html">Using setup.sh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribute_to_minion.html">Contribute</a></li>
+</ul>
+
+        </nav>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    <div class="bodywrapper">
+      <div class="body">
+        
+  <div class="section" id="installing-plugins">
+<h1>Installing Plugins<a class="headerlink" href="#installing-plugins" title="Permalink to this headline">¶</a></h1>
+<p>Plugins are essential to Minion scan. Every attack plan will specify one or more Minion plugin. A plugin
+is essentially a Python wrapper around a scan tool. The tool can be as complex as OWASP ZAP
+(<a class="reference external" href="http://code.google.com/p/zaproxy/">http://code.google.com/p/zaproxy/</a>) or as simple as checking HTTP header using Python (such as basic.plan
+which is shipped with Minion).</p>
+<p>To view a list of plugins available to Minion backend, logged in the frontend with an admin account, click on
+<strong>Administration</strong>, and then click on <strong>Plugins</strong>.</p>
+<img alt="images/plugins.png" src="images/plugins.png" />
+<p>The Minion instance this screenshot is take from has custom plugins such as ZAP and WPScan. Plugins that are under
+the namespace <tt class="docutils literal"><span class="pre">minion.plugins.basic.*</span></tt> comes from the <strong>basic</strong> plugin that is shipped with Minion backend.</p>
+<p>In this document, users can learn how to set up the zap plugin and the skipfish plugin.</p>
+<div class="section" id="zapplugin">
+<span id="id1"></span><h2>ZAPPlugin<a class="headerlink" href="#zapplugin" title="Permalink to this headline">¶</a></h2>
+<p>OWASP ZAP is easy to use integrated penetration testing tool for finding vulnerabilities in web applications. This is
+pretty much the open source alternative to Burp scanner.</p>
+<p>ZAP is available to download from the Internet. Major Linux distrubtion does not bundle ZAP so user must download
+ZAP in a compressed file and then extract it.</p>
+<div class="section" id="choosing-a-version">
+<h3>Choosing a version<a class="headerlink" href="#choosing-a-version" title="Permalink to this headline">¶</a></h3>
+<p>ZAP has a weekly build and a stable build. The current ZAPPlugin supports version 2.2.0 up to 2.2.2. Let&#8217;s get the latest
+stable release at the time of this writing: version 2.2.2. Since Minion is best supported on Ubuntu/Debian servers, here
+we download ZAP_2.2.2_Linux.tar.gz. We can download this file in <tt class="docutils literal"><span class="pre">/home/username/</span></tt> if we want.</p>
+<p>Once we have ZAP_2.2.2_Linux.tar.gz on disk, extract the tar file by <tt class="docutils literal"><span class="pre">tar</span> <span class="pre">xvf</span> <span class="pre">ZAP_2.2.2_Linux.tar.gz</span></tt>.</p>
+</div>
+<div class="section" id="get-minion-zap-plugin">
+<h3>Get minion-zap-plugin<a class="headerlink" href="#get-minion-zap-plugin" title="Permalink to this headline">¶</a></h3>
+<p>We need the Python wrapper available to Minion&#8217;s backend Python environment (so remember to source
+into the appropriate environment if needed).</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/mozilla/minion-zap-plugin.git
+<span class="nv">$ </span><span class="nb">cd </span>minion-zap-plugin
+<span class="nv">$ </span>python setup.py install
+</pre></div>
+</div>
+<p>If you are developing Minion and/or minion-zap-plugin, do <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></tt> instead.
+&#8220;install_plugins.rst&#8221; 123L, 4583C</p>
+<p>If you are developing Minion and/or minion-zap-plugin, do <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></tt> instead.</p>
+</div>
+<div class="section" id="configure-zap-plugin-json">
+<h3>Configure zap-plugin.json<a class="headerlink" href="#configure-zap-plugin-json" title="Permalink to this headline">¶</a></h3>
+<p>Minion plugins can take optional configurations. It searches <tt class="docutils literal"><span class="pre">/etc/minion/</span></tt> and <tt class="docutils literal"><span class="pre">/home/username/.minion/</span></tt>, where
+<tt class="docutils literal"><span class="pre">username</span></tt> is the unix user Minion process will be running as.</p>
+<p>It is probably better to create the configuration directory under the user Minion process runs as.</p>
+<p>The zap plugin expects to find the location of the zap folder. The JSON file looks like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;zap-path&quot;</span><span class="p">:</span> <span class="s">&quot;/home/username/ZAP_2.2.2_Linux/&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This path is chosen because we extracted Minion under <tt class="docutils literal"><span class="pre">/home/username</span></tt> in the first place.</p>
+</div>
+<div class="section" id="reload-backend-and-workers">
+<h3>Reload backend and workers<a class="headerlink" href="#reload-backend-and-workers" title="Permalink to this headline">¶</a></h3>
+<p>Finally, reload the backend server and all the workers. Then go to the frontend and check <tt class="docutils literal"><span class="pre">Plugins</span></tt> under an admin account:
+ZAP should be one of the plugins available to Minion now.</p>
+</div>
+</div>
+<div class="section" id="skipfishplugin">
+<h2>SkipfishPlugin<a class="headerlink" href="#skipfishplugin" title="Permalink to this headline">¶</a></h2>
+<p>Unlike <a class="reference internal" href="#zapplugin"><em>ZAPPlugin</em></a>, Skipfish is available as a Debian package to Ubuntu/Debian platform.</p>
+<div class="section" id="id2">
+<h3>Choosing a version<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Checking the README for minion-skipfish-plugin (<a class="reference external" href="https://github.com/mozilla/minion-skipfish-plugin">https://github.com/mozilla/minion-skipfish-plugin</a>),
+only version <tt class="docutils literal"><span class="pre">2.1.0b</span></tt> is supported.</p>
+<p>If you work on Ubuntu 13.04 or above:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install skipfish
+</pre></div>
+</div>
+<p>If you work on Ubuntu older than 13.04:</p>
+<div class="highlight-bash"><div class="highlight"><pre>wget http://launchpadlibrarian.net/126324292/skipfish_2.10b-1_i386.deb     <span class="o">(</span><span class="k">for </span>32-bit<span class="o">)</span>
+wget http://launchpadlibrarian.net/126324272/skipfish_2.10b-1_amd64.deb    <span class="o">(</span><span class="k">for </span>64-bit<span class="o">)</span>
+sudo dpkg -i skipfish_2.10b-1_<span class="o">[</span>i368|am64<span class="o">]</span>.deb
+wget http://launchpadlibrarian.net/126324272/skipfish_2.10b-1_amd64.deb    <span class="o">(</span><span class="k">for </span>64-bit<span class="o">)</span>
+sudo dpkg -i skipfish_2.10b-1_<span class="o">[</span>i368|am64<span class="o">]</span>.deb
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-minion-skipfish-plugin">
+<h3>Getting minion-skipfish-plugin<a class="headerlink" href="#getting-minion-skipfish-plugin" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s get the plugin code and install the Python package.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/mozilla/minion-skipfish-plugin.git
+<span class="nv">$ </span><span class="nb">cd </span>minion-skipfish-plugin
+<span class="nv">$ </span>python setup.py install
+</pre></div>
+</div>
+<p>If you are developing Minion, or developing minion-skipfish-plugin, you probably should
+call <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></tt> instead of <tt class="docutils literal"><span class="pre">install</span></tt>.</p>
+<p>Finally, just reload your backend and celery workers and the plugin should be discovered by
+Minion.</p>
+</div>
+</div>
+<div class="section" id="skipfish-vs-zap-configuration">
+<h2>Skipfish vs ZAP configuration<a class="headerlink" href="#skipfish-vs-zap-configuration" title="Permalink to this headline">¶</a></h2>
+<p>The difference is that Skipfish can be installed as a system package so there is no
+manual step to make Skipfish available to <tt class="docutils literal"><span class="pre">$PATH</span></tt>. Although you can make ZAP available
+to the <tt class="docutils literal"><span class="pre">$PATH</span></tt> such as editing <tt class="docutils literal"><span class="pre">/etc/environments</span></tt> or placing the ZAP folder in <tt class="docutils literal"><span class="pre">/usr/local/bin</span></tt>
+or such, the author of the plugin feels it is easier to just configure the path manually.</p>
+<p>So this is why ZAP plugin is configurable through <tt class="docutils literal"><span class="pre">zap-plugin.json</span></tt>. It is up to the plugin
+author to choose which route to take and this is not something Minion core developers
+can enforce strictly at the moment. Some plugins can be further configured (beyond locating
+where the executable is located) so <tt class="docutils literal"><span class="pre">.json</span></tt> configuration file is still very useful for all
+plugin.</p>
+<p>To learn more about plugins, please refer to <a class="reference internal" href="developing_plugins.html"><em>Developing Plugins</em></a>.</p>
+</div>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  
+ 
+    <div class="footer">
+        &copy; Copyright 2013, Mozilla.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div> <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script> 
+  </body>
+</html>

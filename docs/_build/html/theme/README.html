@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mozilla sphinx’s theme &mdash; Minion 0.3 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/mozilla.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Minion 0.3 documentation" href="../index.html" /> 
+  </head>
+  <body><a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
+
+    <div class="document">
+  <div class="documentwrapper">
+    
+    <div class="sphinxsidebar">
+        <nav>
+        <h2><a href="../index.html">Minion</a></h2>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configure_minion.html">Configure Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_frontend.html">Using Frontend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install_guide.html">Install Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inside_minion.html">Inside Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developing_plugins.html">Developing Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../using_setup_sh.html">Using setup.sh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute_to_minion.html">Contribute</a></li>
+</ul>
+
+        </nav>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    <div class="bodywrapper">
+      <div class="body">
+        
+  <div class="section" id="mozilla-sphinx-s-theme">
+<h1>Mozilla sphinx&#8217;s theme<a class="headerlink" href="#mozilla-sphinx-s-theme" title="Permalink to this headline">¶</a></h1>
+<p>This is a version of Mozilla&#8217;s sandstone theme, for <a class="reference external" href="http://sphinx.pocoo.org">the Sphinx documentation
+engine.</a>.</p>
+<div class="section" id="okay-how-do-i-install-it">
+<h2>Okay, how do I install it?<a class="headerlink" href="#okay-how-do-i-install-it" title="Permalink to this headline">¶</a></h2>
+<p>You need to install it locally and configure Sphinx to use it. In your <cite>conf.py</cite> file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">mozilla_sphinx_theme</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">html_theme_path</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">mozilla_sphinx_theme</span><span class="o">.</span><span class="n">__file__</span><span class="p">)]</span>
+
+<span class="n">html_theme</span> <span class="o">=</span> <span class="s">&#39;mozilla&#39;</span>
+</pre></div>
+</div>
+<p>Also, take care and remove the <cite>pygments_style</cite> configuration, as it may not be
+of the better taste with the mozilla&#8217;s theme.</p>
+<p>Enjoy!</p>
+</div>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  
+ 
+    <div class="footer">
+        &copy; Copyright 2013, Mozilla.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div> <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script> 
+  </body>
+</html>

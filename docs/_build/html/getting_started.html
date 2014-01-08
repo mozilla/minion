@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting Started &mdash; Minion 0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/mozilla.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Minion 0.3 documentation" href="index.html" />
+    <link rel="next" title="Configure Minion" href="configure_minion.html" />
+    <link rel="prev" title="Welcome to Minion" href="index.html" /> 
+  </head>
+  <body><a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
+
+    <div class="document">
+  <div class="documentwrapper">
+    
+    <div class="sphinxsidebar">
+        <nav>
+        <h2><a href="index.html">Minion</a></h2>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pre-requisites">Pre-requisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-minion">Installing Minion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-minion">Running Minion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-minion-admin">Create Minion Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#explore-the-frontend">Explore the frontend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-new-plugins">Install New Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#moving-from-beginngers">Moving from beginngers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configure_minion.html">Configure Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_frontend.html">Using Frontend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install_guide.html">Install Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inside_minion.html">Inside Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing_plugins.html">Developing Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_setup_sh.html">Using setup.sh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribute_to_minion.html">Contribute</a></li>
+</ul>
+
+        </nav>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    <div class="bodywrapper">
+      <div class="body">
+        
+  <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>This document shows how to get started with Minion by getting your own Minion installation for the first time.</p>
+<div class="section" id="pre-requisites">
+<h2>Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Minion has been developed primarily on Ubuntu 12.04 and 13.04 so running Minion on other systems is not a guarantee</li>
+<li>Python 2.7+ (not Python 3 compatible)</li>
+</ul>
+<p>Finally, we need these dependencies fulfill:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo apt-get update
+sudo apt-get install git build-essential python-virtualenv python-dev rabbitmq-server mongodb-server curl libcurl4-openssl-dev
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>It is helpful to assume the followings for the purpose of this guide:</p>
+<ol class="last arabic simple">
+<li>Minion&#8217;s Python dependencies will reside in a virtualenv</li>
+<li>Minion and plugin repositories will reside under <tt class="docutils literal"><span class="pre">/home/user/</span></tt> directory.</li>
+<li>Point 1 and 2 are not required for production, but for the purpose of this tutorial.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="installing-minion">
+<h2>Installing Minion<a class="headerlink" href="#installing-minion" title="Permalink to this headline">¶</a></h2>
+<p>Minion has two components: minion-backend and minion-frontend. To get both installed, the quick way is
+to use <tt class="docutils literal"><span class="pre">setup.sh</span></tt>. This script resides in a different repository: <a class="reference external" href="https://github.com/mozilla/minion">https://github.com/mozilla/minion</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you want to set up the backend and the frontend individually (suitable for production),
+please refer to <a class="reference internal" href="install_guide.html#install-backend-label"><em>Install Minion Backend</em></a> and <a class="reference internal" href="install_guide.html#install-frontend-label"><em>Install Minion Frontend</em></a>.</p>
+</div>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/mozilla/minion.git
+<span class="nv">$ </span><span class="nb">cd </span>minion
+<span class="nv">$ </span>./setup.sh clone
+<span class="nv">$ </span>./setup.sh develop
+</pre></div>
+</div>
+<p>By cloning we clone both the backend and frontend to the current directory (which in this case we assume it to be
+<tt class="docutils literal"><span class="pre">/home/user/minion</span></tt> directory.</p>
+<p>The last command will create a virtualenv called <tt class="docutils literal"><span class="pre">env</span></tt> under <tt class="docutils literal"><span class="pre">/home/user/minion</span></tt>. This virtualenv is shared by
+the backend and frontend (this is not the best practice, but for the purpose of getting started this is enough). The
+<tt class="docutils literal"><span class="pre">develop</span></tt> command will then source into this virtualenv and run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></tt> on the backend
+and the frontend to get all the dependencies fulfill.</p>
+<p>There is also <tt class="docutils literal"><span class="pre">./setup.sh</span> <span class="pre">install</span></tt> which performs <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></tt>. This is better for production. To learn
+more about the usage of the script, please refer to <a class="reference internal" href="using_setup_sh.html"><em>Using setup.sh</em></a>.</p>
+</div>
+<div class="section" id="running-minion">
+<h2>Running Minion<a class="headerlink" href="#running-minion" title="Permalink to this headline">¶</a></h2>
+<p>As aforementioned, Minion is broken down into backend and frontend which are both using Flask web framework. Minion backend
+also runs three celery workers which are used to communicate between plugin scanning processes.</p>
+<p>Let&#8217;s have five terminals opened. Each terminal will <tt class="docutils literal"><span class="pre">cd</span> <span class="pre">minion</span></tt> so that the current working directory is <tt class="docutils literal"><span class="pre">/home/user/minion</span></tt>.
+Then for each terminal, run one of the following commands:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>./setup.sh run-backend
+<span class="nv">$ </span>./setup.sh run-frontend
+<span class="nv">$ </span>./setup.sh run-plugin-worker
+<span class="nv">$ </span>./setup.sh run-state-worker
+<span class="nv">$ </span>./setup.sh run-scan-worker
+</pre></div>
+</div>
+<p>By default, the backend runs on <tt class="docutils literal"><span class="pre">127.0.0.1:8383</span></tt> while the frontend runs on <tt class="docutils literal"><span class="pre">0.0.0.0:8080</span></tt>; you can
+visit the frontend by going to <tt class="docutils literal"><span class="pre">http://&lt;vm-ip-address&gt;:8080/</span></tt> in your browser assuming that
+your VM IP is accessible to your host computer.</p>
+<p>If you wonder how these commands actually work, please refer to <a class="reference internal" href="using_setup_sh.html"><em>Using setup.sh</em></a>.</p>
+<p>To configure Minion, please refer to <a class="reference internal" href="configure_minion.html"><em>Configure Minion</em></a>.</p>
+</div>
+<div class="section" id="create-minion-admin">
+<h2>Create Minion Admin<a class="headerlink" href="#create-minion-admin" title="Permalink to this headline">¶</a></h2>
+<p>Almost there! The very last bit is to create a Minion super user. To do this, the backend comes with a handy script
+called <tt class="docutils literal"><span class="pre">minion-db-init</span></tt>.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>minion
+<span class="nv">$ </span><span class="nb">cd </span>minion-backend/scripts
+<span class="nv">$ </span>./minion-db-init
+
+Enter the administrator<span class="s1">&#39;s Persona email:</span>
+<span class="s1">Enter the administrator&#39;</span>s name:
+Do you want to import some <span class="nb">test </span>sites into minion? <span class="o">[</span>y/n<span class="o">]</span>
+</pre></div>
+</div>
+<p>Enter an email that has been registered as Persona email account. If you don&#8217;t have one or you are new to Persona,
+please check out <a class="reference internal" href="persona.html"><em>Sign up for a Persona account</em></a> before proceeding.</p>
+<p>You don&#8217;t have to provide a real name, but this is the name we use in formal information such as sending invitation
+to a friend to join Minion. Mozilla does not collect data from self-hosted Minion if you care about your privacy.</p>
+<p>You also don&#8217;t need to import test sites. By test sites we mean security testing sites. These sites are developed
+and free to security testers for testing security tools. We encourage new users to import them when learning about
+Minion. You can always delete them later (or start from scratch when you deploy a production version).</p>
+</div>
+<div class="section" id="explore-the-frontend">
+<h2>Explore the frontend<a class="headerlink" href="#explore-the-frontend" title="Permalink to this headline">¶</a></h2>
+<p>I have a separate page to guide you how to use the frontend. Please check <a class="reference internal" href="using_frontend.html"><em>Using Frontend</em></a>.</p>
+</div>
+<div class="section" id="install-new-plugins">
+<h2>Install New Plugins<a class="headerlink" href="#install-new-plugins" title="Permalink to this headline">¶</a></h2>
+<p>Plugins are essentials. As a new Minion owner, you should try installing new plugins. We have
+a separate guide on this topic, so please check <a class="reference internal" href="install_plugins.html"><em>Installing Plugins</em></a>.</p>
+</div>
+<div class="section" id="moving-from-beginngers">
+<h2>Moving from beginngers<a class="headerlink" href="#moving-from-beginngers" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="configure_minion.html"><em>Configure Minion</em></a></li>
+<li><a class="reference internal" href="inside_minion.html"><em>Inside Minion</em></a></li>
+<li><a class="reference internal" href="developing_plugins.html"><em>Developing Plugins</em></a></li>
+<li><a class="reference internal" href="using_setup_sh.html"><em>Using setup.sh</em></a></li>
+<li><a class="reference internal" href="contribute_to_minion.html"><em>Contribute</em></a></li>
+</ul>
+</div>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  
+ 
+    <div class="footer">
+        &copy; Copyright 2013, Mozilla.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div> <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script> 
+  </body>
+</html>

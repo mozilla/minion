@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Using setup.sh &mdash; Minion 0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/mozilla.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Minion 0.3 documentation" href="index.html" />
+    <link rel="next" title="Contribute" href="contribute_to_minion.html" />
+    <link rel="prev" title="Developing Plugins" href="developing_plugins.html" /> 
+  </head>
+  <body><a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
+
+    <div class="document">
+  <div class="documentwrapper">
+    
+    <div class="sphinxsidebar">
+        <nav>
+        <h2><a href="index.html">Minion</a></h2>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure_minion.html">Configure Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_frontend.html">Using Frontend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install_guide.html">Install Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inside_minion.html">Inside Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing_plugins.html">Developing Plugins</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Using setup.sh</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#options">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage-examples">Usage Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contribute_to_minion.html">Contribute</a></li>
+</ul>
+
+        </nav>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    <div class="bodywrapper">
+      <div class="body">
+        
+  <div class="section" id="using-setup-sh">
+<h1>Using setup.sh<a class="headerlink" href="#using-setup-sh" title="Permalink to this headline">¶</a></h1>
+<p>This document describes using setup.sh script.</p>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">-x</span></tt> option specify the root directory of where minion repositories and the virtualenv should reside. By default,
+this is the current directory of the current terminal. This option is usable for all the commands.</p>
+<p><tt class="docutils literal"><span class="pre">-a</span></tt> option specify the address the web server (minion-backend and minion-frontend) runs on.</p>
+<p><tt class="docutils literal"><span class="pre">-p</span></tt> option specify the port the web server (minion-backend and minion-frontend) listens on.</p>
+</div>
+<div class="section" id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="79%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Command</td>
+<td>Description</td>
+</tr>
+<tr class="row-even"><td>clone</td>
+<td>Clone minion-backend and minion-frontend to the location specify by <tt class="docutils literal"><span class="pre">-x</span></tt> option.</td>
+</tr>
+<tr class="row-odd"><td>develop</td>
+<td>Create and source into <strong>env</strong> virtualenv located next to the repositories at
+the location specify by <tt class="docutils literal"><span class="pre">-x</span></tt> option. Then run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></tt>.</td>
+</tr>
+<tr class="row-even"><td>install</td>
+<td>Similar to <tt class="docutils literal"><span class="pre">develop</span></tt> except runs <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></tt>.</td>
+</tr>
+<tr class="row-odd"><td>run-backend</td>
+<td>Run <tt class="docutils literal"><span class="pre">minion-backend-api</span></tt> script distrubted in minionp-backend to start backend
+server. Default to <tt class="docutils literal"><span class="pre">-p</span> <span class="pre">8383</span></tt> and <tt class="docutils literal"><span class="pre">-a</span> <span class="pre">127.0.0.1</span></tt>.</td>
+</tr>
+<tr class="row-even"><td>run-frontend</td>
+<td>Run <tt class="docutils literal"><span class="pre">minion-frontend</span></tt> script distrubted in minionp-frontend to start frontend
+server. Default to <tt class="docutils literal"><span class="pre">-p</span> <span class="pre">8383</span></tt> and <tt class="docutils literal"><span class="pre">-a</span> <span class="pre">127.0.0.1</span></tt>.</td>
+</tr>
+<tr class="row-odd"><td>run-plugin-worker</td>
+<td>Run <tt class="docutils literal"><span class="pre">minion-plugin-worker</span></tt> script distributed in minion-backend to start a celery
+worker to run a plugin.</td>
+</tr>
+<tr class="row-even"><td>run-scan-worker</td>
+<td>Run <tt class="docutils literal"><span class="pre">minion-scan-worker</span></tt> script distributed in minion-backend to start a celery
+worker to inititaite and collect scan results.</td>
+</tr>
+<tr class="row-odd"><td>run-state-worker</td>
+<td>Run <tt class="docutils literal"><span class="pre">minion-state-worker</span></tt> script distributed in minion-backend to start a celery
+worker to keep track of the state of scan.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="usage-examples">
+<h2>Usage Examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">pwd</span>
+/home/user/minion
+<span class="nv">$ </span>./setup.sh clone
+<span class="nv">$ </span>./setup.sh develop
+<span class="nv">$ </span>./setup.sh run-backend
+<span class="nv">$ </span>ls
+env minion-backend minion-frontend setup.sh README.md
+</pre></div>
+</div>
+<p>This will use all the default options. It will clone minion-backend and minion-frontend to <tt class="docutils literal"><span class="pre">/home/user/minion</span></tt> and the backend
+is started on <tt class="docutils literal"><span class="pre">127.0.0.1:8383</span></tt>.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">pwd</span>
+/home/user/minion
+<span class="nv">$ </span>mkdir projects
+<span class="nv">$ </span>ls
+setup.sh README.md projects
+<span class="nv">$ </span>./setup.sh clone -x projects
+<span class="nv">$ </span>ls projects
+minion-backend minion-frontend
+</pre></div>
+</div>
+<p>In this session, an empty directory called <tt class="docutils literal"><span class="pre">projects</span></tt> is created at <tt class="docutils literal"><span class="pre">/home/user/minion</span></tt>. The <tt class="docutils literal"><span class="pre">-x</span></tt> option is used and <tt class="docutils literal"><span class="pre">projects</span></tt> is specify.
+The <tt class="docutils literal"><span class="pre">clone</span></tt> command then clone the two repositories down into <tt class="docutils literal"><span class="pre">/home/user/minion/projects</span></tt>.</p>
+<p>We can continue setting up Minion like this:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>./setup.sh develop -x projects
+<span class="nv">$ </span>ls projects
+env minion-backend minion-frontend
+<span class="nv">$ </span>./setup.sh run-backend -x projects -p 1234
+<span class="nv">$ </span>./setup.sh run-plugin-worker -x projects
+</pre></div>
+</div>
+<p>Following the previous session, we install Minion by specifying where minion-backend and minion-frontend resides. The virtualenv <strong>env</strong>
+is created. Afterward, we start the backend server and specify that the virtualenv <strong>env</strong> is under the directory projects. We also
+specify the server should listen on port 1234 instead of the default 8383. We also specify the location of the env when we run the plugin worker.</p>
+<p>Note that <tt class="docutils literal"><span class="pre">-a</span></tt> and <tt class="docutils literal"><span class="pre">-p</span></tt> are only usable for the servers. Workers can use the <tt class="docutils literal"><span class="pre">-x</span></tt>.</p>
+</div>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  
+ 
+    <div class="footer">
+        &copy; Copyright 2013, Mozilla.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div> <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script> 
+  </body>
+</html>

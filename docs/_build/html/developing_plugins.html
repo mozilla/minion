@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Developing Plugins &mdash; Minion 0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/mozilla.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Minion 0.3 documentation" href="index.html" />
+    <link rel="next" title="Using setup.sh" href="using_setup_sh.html" />
+    <link rel="prev" title="Inside Minion" href="inside_minion.html" /> 
+  </head>
+  <body><a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
+
+    <div class="document">
+  <div class="documentwrapper">
+    
+    <div class="sphinxsidebar">
+        <nav>
+        <h2><a href="index.html">Minion</a></h2>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure_minion.html">Configure Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_frontend.html">Using Frontend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install_guide.html">Install Minion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inside_minion.html">Inside Minion</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Developing Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-minion-discovers-new-plugins">How Minion discovers new plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#minion-plugin-classes">Minion Plugin Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#import-plugin-class-in-init-py">Import plugin class in __init__.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plugin-template-generator">Plugin Template Generator</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="using_setup_sh.html">Using setup.sh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribute_to_minion.html">Contribute</a></li>
+</ul>
+
+        </nav>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    <div class="bodywrapper">
+      <div class="body">
+        
+  <div class="section" id="developing-plugins">
+<h1>Developing Plugins<a class="headerlink" href="#developing-plugins" title="Permalink to this headline">¶</a></h1>
+<p>Minion plugins are Python classes that talks to a security aessement tool. This tool can be pure
+Python code inside the class doing HTTP header check (which is what the basic plugins
+do), or invoke an external executable binary. It can be as simple as a few lines of perl script
+or as complex as OWASP ZAP.</p>
+<div class="section" id="how-minion-discovers-new-plugins">
+<h2>How Minion discovers new plugins<a class="headerlink" href="#how-minion-discovers-new-plugins" title="Permalink to this headline">¶</a></h2>
+<p>If we look at minion-zap-plugin&#8217;s source code structure closely,
+we notice the layout of the package looks like this:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>tree minion-zap-plugin
+
+minion-zap-plugin/
+|-- minion
+|   |-- __init__.py
+|   |-- __init__.pyc
+|   <span class="sb">`</span>-- plugins
+|       |-- __init__.py
+|       <span class="sb">`</span>-- zap
+|           |-- config.xml.example
+|           |-- __init__.py
+|           |-- reference.py
+|           |-- zap_plugin.py
+|-- README.rst
+|-- setup.py
+</pre></div>
+</div>
+<p>Every plugin must fall under the <tt class="docutils literal"><span class="pre">minion.plugins</span></tt> package namespace.
+This is how the backend detects an existence of a plugin. The third level
+in minion-zap-plugin is a directory called <strong>zap</strong>. This is the namespace
+of the plugin itself. In addition, the plugin class must be a subclass of
+<tt class="docutils literal"><span class="pre">AbstractPlugin</span></tt> and the following class member attributes:</p>
+<p>** <tt class="docutils literal"><span class="pre">PLUGIN_NAME</span></tt>: the name of the plugin displayed to the frontend user</p>
+<p>** <tt class="docutils literal"><span class="pre">PLUGIN_WEIGHT</span></tt>: level of resource required to launch this plugin (light, medium, heavy)</p>
+<p>The registry code is found in <a class="reference external" href="https://github.com/mozilla/minion-backend/blob/master/minion/backend/views/base.py">base.py</a> under the views directory.</p>
+<p>Whenever a plugin is installed, the backend server and all the celery workers must be restarted.</p>
+</div>
+<div class="section" id="minion-plugin-classes">
+<h2>Minion Plugin Classes<a class="headerlink" href="#minion-plugin-classes" title="Permalink to this headline">¶</a></h2>
+<p>Now that you know how Minion discovers a new plugin,
+we can examine plugin classes.</p>
+<p>The first thing a plugin author needs to understand is the basics of
+Twisted. Minion&#8217;s Task Engine uses <a class="reference external" href="http://twistedmatrix.com/trac/">Twisted</a>
+for running plugins. We recommend plugin authors go over
+<a class="reference external" href="http://krondo.com/blog/?page_id=1327">An Introduction to Asynchronous Programming and Twisted</a> before jumping into writing plugin. We will only cover relevant information
+to get you understand how a Minion plugin works.</p>
+<div class="section" id="abstractplugin-class">
+<h3><tt class="docutils literal"><span class="pre">AbstractPlugin</span></tt> class<a class="headerlink" href="#abstractplugin-class" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">AbstractPlugin</span></tt> class implements a set of methods and attributes that
+a plugin should define. It also provides additional methods
+that need not be override by plugin authors. The <tt class="docutils literal"><span class="pre">AbstractPlugin</span></tt> <strong>should be</strong>
+the base class for any plugin you want to write. Minion ships with two
+classes of plugins (<tt class="docutils literal"><span class="pre">BlockingPlugin</span></tt> and
+<tt class="docutils literal"><span class="pre">ExternalProcessPlugin</span></tt>) inherit from <tt class="docutils literal"><span class="pre">AbstractPlugin</span></tt> and other plugins
+Minion developers have developed so far are inheriting from one of the two
+classes. We will get into them in the later section; let&#8217;s focus on
+<tt class="docutils literal"><span class="pre">AbstractPlugin</span></tt>.</p>
+<p>Remember how Minion discovers and registers new plugin? The registry
+code expects the plugin to be found in the <tt class="docutils literal"><span class="pre">minion.plugins</span></tt> namespace,
+and in addition the plugins must have three class methods defined:
+<tt class="docutils literal"><span class="pre">name</span></tt>, <tt class="docutils literal"><span class="pre">version</span></tt>, and <tt class="docutils literal"><span class="pre">weight</span></tt>.</p>
+<p>The <tt class="docutils literal"><span class="pre">AbstractPlugin</span></tt> implements these class methods with a default value.
+For example, if you don&#8217;t define <tt class="docutils literal"><span class="pre">name</span></tt>, it will use the plugin&#8217;s class name
+as the name of the plugin. But it is always a good idea to define them
+yourself.</p>
+<p>To actual do work, a plugin should implement <tt class="docutils literal"><span class="pre">do_configure</span></tt>, <tt class="docutils literal"><span class="pre">do_start</span></tt>
+and <tt class="docutils literal"><span class="pre">do_stop</span></tt> methods since the <tt class="docutils literal"><span class="pre">AbstractPlugin</span></tt> leaves them blank.</p>
+</div>
+<div class="section" id="blockingplugin-class">
+<h3><tt class="docutils literal"><span class="pre">BlockingPlugin</span></tt> class<a class="headerlink" href="#blockingplugin-class" title="Permalink to this headline">¶</a></h3>
+<p>This class inherits from <tt class="docutils literal"><span class="pre">AbstractPlugin</span></tt> directly and is defined in
+<a class="reference external" href="https://github.com/mozilla/minion-backend/blob/master/minion/plugins/base.py">base.py</a>
+like <tt class="docutils literal"><span class="pre">AbstractPlugin</span></tt>.</p>
+<p>The <tt class="docutils literal"><span class="pre">BlockingPlugin</span></tt> implements <tt class="docutils literal"><span class="pre">do_configure</span></tt>, <tt class="docutils literal"><span class="pre">do_start</span></tt>, and <tt class="docutils literal"><span class="pre">do_stop</span></tt>
+methods. Most of the Twsited logics are defined in the <tt class="docutils literal"><span class="pre">do_start</span></tt> method. The
+class simply expects a method called <tt class="docutils literal"><span class="pre">do_run</span></tt> and passes this method to the
+<tt class="docutils literal"><span class="pre">deferToThread</span></tt> which will return an asynchronous result that will return
+an actual result some time in the future. The nice <tt class="docutils literal"><span class="pre">deferToThread</span></tt> API
+has a pair of callbacks: success and failure. We simply add these two
+callbacks to the defer result object and returns.</p>
+<p>The magic of Twsited is the event-driven model, also known as reactor model.
+The idea is that an event loop will react to an event, possibly executes the
+event, and then emits a callback when the event is finished.</p>
+<p>You are probably wondering what happen to <tt class="docutils literal"><span class="pre">do_configure</span></tt>. This particular
+class of plugin does not expect any pre-processing configuration needed. As
+we study the source code, we will see that all basic plugins are instances of
+<tt class="docutils literal"><span class="pre">BlockingPlugin</span></tt>. After all, they just need to connect to the target URL,
+examine a header or validate the robots.txt.</p>
+</div>
+<div class="section" id="externalprocessplugin-class">
+<h3><tt class="docutils literal"><span class="pre">ExternalProcessPlugin</span></tt> class<a class="headerlink" href="#externalprocessplugin-class" title="Permalink to this headline">¶</a></h3>
+<p>This is another implementation of <tt class="docutils literal"><span class="pre">AbstractPlugin</span></tt> class and this class
+is useful for executing a plugin that relies on external process such as
+ZAP or Skipfish. Instead of calling <tt class="docutils literal"><span class="pre">subprocess</span></tt>, we use Twsited&#8217;s
+<tt class="docutils literal"><span class="pre">reactor.spawnProcess</span></tt> to launch the external process.</p>
+<p>Keen readers notice <tt class="docutils literal"><span class="pre">do_configure</span></tt> is also not defined. This is intentional.
+Every plugin that inherits from the <tt class="docutils literal"><span class="pre">ExternalProcessPlugin</span></tt> will implement
+its own <tt class="docutils literal"><span class="pre">do_configure</span></tt> because different process is launched differently.</p>
+</div>
+</div>
+<div class="section" id="import-plugin-class-in-init-py">
+<h2>Import plugin class in __init__.py<a class="headerlink" href="#import-plugin-class-in-init-py" title="Permalink to this headline">¶</a></h2>
+<p>When we revisit the structure of a plugin package, it looks like this:</p>
+<div class="highlight-bash"><div class="highlight"><pre>minion-zap-plugin/
+|-- minion
+|   |-- __init__.py
+|   |-- __init__.pyc
+|   <span class="sb">`</span>-- plugins
+|       |-- __init__.py
+|       <span class="sb">`</span>-- zap
+|           |-- config.xml.example
+|           |-- __init__.py
+|           |-- reference.py
+|           |-- zap_plugin.py
+|-- README.rst
+|-- setup.py
+</pre></div>
+</div>
+<p>The third <tt class="docutils literal"><span class="pre">__init__.py</span></tt> should import the main plugin class. In the case of the zap plugin, it looks like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">zap_plugin</span> <span class="kn">import</span> <span class="n">ZAPPlugin</span>
+</pre></div>
+</div>
+<p>If the file is left blank, Minion&#8217;s plugin discovery code will not be able to import <tt class="docutils literal"><span class="pre">ZAPPlugin</span></tt>.</p>
+</div>
+<div class="section" id="plugin-template-generator">
+<h2>Plugin Template Generator<a class="headerlink" href="#plugin-template-generator" title="Permalink to this headline">¶</a></h2>
+<p>Because developing a plugin with the right structure can be tedious and error-prone, there is a script
+to generate Minion plugin. The script lives here: <a class="reference external" href="https://gist.github.com/yeukhon/8309083">https://gist.github.com/yeukhon/8309083</a></p>
+<p>To use this script, download <strong>generate-plugin.py</strong> and <strong>config.ini</strong>. Then edit config.ini to fit your
+need (see sample-config.ini on the same page as an example).</p>
+</div>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  
+ 
+    <div class="footer">
+        &copy; Copyright 2013, Mozilla.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div> <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script> 
+  </body>
+</html>
