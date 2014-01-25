@@ -1,0 +1,3 @@
+[submodule "docs/source/theme"]
+	path = docs/source/theme
+	url = https://github.com/yeukhon/mozilla-sphinx-theme.git
