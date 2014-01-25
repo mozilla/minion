@@ -3,7 +3,7 @@ About Minion
 
 Minion is a security testing framework built by Mozilla to bridge the gap between developers and security testers. To do so, it enables developers to scan their projects using a friendly interface.
 
-For more information see https://wiki.mozilla.org/Security/Projects/Minion
+For complete user and developer documentation see http://minion.readthedocs.org/en/latest/
 
 About this project
 ------------------
