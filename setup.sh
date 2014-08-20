@@ -15,10 +15,12 @@ fi
 
 if [ ! `which virtualenv` ]; then
     echo "abort: no virtualenv found"
+    exit 1
 fi
 
 if [ ! `which python2.7` ]; then
     echo "abort: no python2.7 found"
+    exit 1
 fi
 
 if [ ! -z "$VIRTUAL_ENV" ]; then
