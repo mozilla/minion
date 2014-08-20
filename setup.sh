@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# make.sh <clone|setup|run-frontend|run-backend|run-scan-worker|run-state-worker|run-plugin-worker>
+# make.sh <clone|setup|run-frontend|run-backend|run-scan-worker|run-state-worker|run-plugin-worker|run-scanscheduler>
 #
 # This script is really just for development only. It makes it easier to
 # checkout the depend projects and to set them up in a virtualenv.
@@ -104,7 +104,15 @@ case $COMMAND in
         source "$ROOT/env/bin/activate"
         $ROOT/minion-backend/scripts/minion-plugin-worker
         ;;
+    run-scheduler)
+        source "$ROOT/env/bin/activate"
+        $ROOT/minion-backend/scripts/minion-scanscheduler
+        ;;
+    run-scheduler-worker)
+        source "$ROOT/env/bin/activate"
+        $ROOT/minion-backend/scripts/minion-scanschedule-worker
+        ;;
     *)
-        echo "Usage : $0 <clone|install|develop|run-backend|run-frontend|run-plugin-worker|run-scan-worker|run-state-worker>"
+        echo "Usage : $0 <clone|install|develop|run-backend|run-frontend|run-plugin-worker|run-scan-worker|run-state-worker|run-scheduler|run-scheduler-worker>"
         ;;
 esac
