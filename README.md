@@ -97,6 +97,17 @@ Start the backend plugin worker in a new shell window:
     $ cd minion
     $ ./setup.sh run-plugin-worker
 
+Start the scan scheduler worker in a new shell window:
+
+    $ cd minion
+    $ ./setup.sh run-scheduler-worker
+
+Start the scan scheduler in a new shell window:
+
+    $ cd minion
+    $ ./setup.sh run-scheduler
+
+
 License
 -------
 This software is licensed under the MPL License. For more
