@@ -15,6 +15,9 @@ The following two projects are the bare minimum needed to get Minion up and runn
 * https://github.com/mozilla/minion-backend
 * https://github.com/mozilla/minion-frontend
 
+The following project helps developers setup their environment to get hacking on Minion: 
+* https://github.com/mozilla/minion-vm
+
 The following projects are optional plugins for minion that add more functionality or wrap existing tools:
 
 * https://github.com/mozilla/minion-zap-plugin
