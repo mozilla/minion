@@ -1,51 +1,38 @@
-.. Minion documentation master file, created by
-   sphinx-quickstart on Mon Aug  5 10:53:21 2013.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Mozilla Minion
+##############
 
-Welcome to Minion
-#################
+Minion is a security testing framework built by Mozilla to bridge the gap between developers and security testers. To do so, it enables developers to scan with a wide variety of security tools, using a simple HTML-based interface.
 
-Minion is a security testing framework built by Mozilla to bridge the gap between developers and security testers. To do so, it enables developers to scan their projects using a friendly interface.
+It consists of three umbrella projects:
 
-For more information see https://wiki.mozilla.org/Security/Projects/Minion
+.. include:: include/minion_repos.rst
 
-Source code are on Github: see `minion-backend <https://github.com/mozilla/minion-backend>`_ and
-`minion-frontend <https://github.com/mozilla/minion-frontend>`_.
+Minion has limited scanning functionality built into itself. Instead, it relies on the large variety of pre-existing open source and commercial scanning tools. These plugins include:
+
+.. include:: include/plugin_repos.rst
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :hidden:
 
-   getting_started
-   configure_minion
-   install_plugin
-   using_frontend
    install_guide
+   install_plugins
+   configure_minion
+   install_plugins
+   using_minion
    inside_minion
    developing_plugins
-   using_setup_sh
    contribute_to_minion
  
 Developers
 ==========
 
-We are available on #websectools or on Github.
+We are available in the #websectools channel on irc.mozilla.org:
 
-* Stefan Arentz (st3fan)
+* April King (April)
 
-* Yeuk Hon Wong (yeukhon)
+* Mark Goodwin (mgoodwin)
 
 * Simon Bennetts (psiinon)
 
-* Mark Goodwin (mgoodwin) 
-
-* Matthew Fuller
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+* Yvan Boily (yvan)

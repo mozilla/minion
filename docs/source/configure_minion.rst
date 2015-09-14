@@ -1,72 +1,74 @@
-Configure Minion
-################
+Configuring Minion
+##################
 
-Minion backend and frontend can be configured after installation. This document will
-explain how to configure them.
+This document explains how to configure the Minion frontend and backend.
 
-As a convention, Minion will look at ``/etc/minion/`` and ``/home/user/.minion``. In the second
-case, the user home directory is the user that runs Minion backend server.
+As a convention, Minion will look in ``/etc/minion/`` and ``~minion/.minion`` for its configuration files.
 
-.. _whitelist_blacklist_hostname_label:
+.. _configure_minion_frontend_label:
 
-Hostname Whitelist and Blacklist
-================================
+Configure Minion Frontend
+=========================
 
-As of Minion 0.3 release, Minion will blacklist the following IP addresses from scanning.
-
-.. code-block:: python
-
-    '10.0.0.0/8',
-    '127.0.0.0/8',
-    '172.16.0.0/12',
-    '192.168.0.0/16',
-    '169.254.0.0/16'
-
-You can check the latest list from https://github.com/mozilla/minion-backend/blob/master/minion/backend/utils.py.
-
-The effect of this is that Minion will refuse to scan any target site whose hostname falls in one of the ranges.
-For example, when Minion resolve the hostname ``localhost`` to ``127.0.0.1``, Minion will abort the scan because
-it is blacklisted.
-
-To configure the blacklist and whitelist, you can supply a file called **scan.json** in either ``/etc/minion/``
-or ``/home/user/.minion/``.
-
-.. code-block:: python
+Here is the `default configuration <https://github.com/mozilla/minion-vm/blob/master/frontend.json>`_ for the Minion frontend server::
 
     {
-        "whitelist": [
-            "192.168.0.0/16",
-            "127.0.0.1"
-        ]
+        "backend-api": {
+            "url": "http://minion-backend:8383"
+        },
+
+        "login": {
+            "type": "persona",
+
+            "ldap": {
+                "uri": "ldaps://ldap.server/",
+                "baseDN": "ou=test,dc=test_dc",
+
+                "emailAttribute": "mail",
+                "groupMembershipAttribute": "member",
+                "usernameAttribute": "uid",
+
+                "checkAuthorizedGroups": false,
+                "authorizedGroups": [
+                    "ou=groupTest1,ou=test,dc=test_dc",
+                    "ou=groupTest2,ou=test,dc=test_dc"
+                ]
+            }
+        }
     }
 
-In this configuration, we allowed scanning LAN network and localhost. This is useful when you are testing your
-own web application from home. However, ``172.16.0.0/12`` range is still restricted from scanning. 
+To configure the frontend, place your configuration in a file called ``frontend.json`` in either ``/etc/minion`` or ``/home/user/.minion``.
 
-You can supply your own blaclist as well.
+- ``backend-api``
 
-.. code-block:: python
+  - ``uri``: URI of the Minion backend server
 
-    {
-        "whitelist": [
-            "192.168.0.0/16",
-            "127.0.0.1"
-        ],
-        "blacklist": [
-            "foobar.com"
-        ]
-    }
+- ``login``
 
-In this example, foobar.com is not scannable. When we specify our own blacklist, we replace the default one
-entirely with our own. So we can omit the whitelist in our example.
+  - ``type``: the type of authentication to use; support types are currently ``persona``, which requires no configuration, and ``ldap``
 
+  - ``ldap``: the configuration for LDAP, if ``ldap`` is the chosen authentication method in ``login -> ``type`` 
 
-Configure Backend
-=================
+    - ``uri``: URI to ldap server
 
-Here is the default configuration for the backend server (see https://github.com/mozilla/minion-backend/blob/master/minion/backend/utils.py)
+    - ``baseDN``: baseDN for users; not needed for Active Directory
 
-.. code-block:: python
+    - ``emailAttribute``: typically ``mail`` in OpenLDAP or ``userPrincipalName`` in Active Directory
+
+    - ``groupMembershipAttribute``: typically ``member`` in OpenLDAP or ``uniqueMember`` in Active Directory
+
+    - ``usernameAttribute``: typically ``uid`` in OpenLDAP or ``samAccountName`` in AD
+
+    - ``checkAuthorizedGroups``: if true, require group membership in addition to valid user id
+
+    - ``authorizedGroups``: list of groups where users are authorized to use Minion (if ``checkAuthorizedGroups`` is true)
+
+.. _configure_minion_backend_label:
+
+Configure Minion Backend
+========================
+
+Here is the `default configuration <https://github.com/mozilla/minion-backend/blob/master/etc/backend.json>`_ for the Minion backend server::
 
     {
         'api': {
@@ -83,29 +85,95 @@ Here is the default configuration for the backend server (see https://github.com
         'email': {
             'host': '127.0.0.1',
             'port': 25,
-            'max_time_allowed': 3600 * 24 * 7 # seconds in 7 days
+            'max_time_allowed': 604800 * 24 * 7 # 60 * 60 * 24 * 7 seconds
         }
     }
 
-To configure the backend, supply all the options in a file called ``backend.json`` at either ``/etc/minion`` or
+To configure the backend, place your configuration in a file called ``backend.json`` at either ``/etc/minion`` or
 ``/home/user/.minion``.
 
-The ``api/url`` is the full authority (hostname and port) of the backend server.
+- ``api``
 
-The ``max_time_allowed`` determines the life time of an invitation; by default it will remain valid for seven days.
+  - ``url``: the full authority (hostname and port) of the backend server.
 
-Configure Frontend
-==================
+- ``celery``
 
-The frontend is much simpler.
+  - ``broker``: URI of the celery broker
 
-.. code-block:: python
+  - ``backend``: protocol used to speak to backend
+
+- ``mongodb``:
+
+  - ``host``: hostname of MongoDB server
+
+  - ``port``: port of the MongoDB server
+
+- ``email``
+
+  - ``host``: hostname of mail server
+
+  - ``port``: port of mail server
+
+  - ``max_time_allowed``: determines the life time of an invitation; by default it will remain valid for seven days.
+
+
+.. _whitelist_blacklist_hostname_label:
+
+Whitelisting and Blacklisting Hosts
+===================================
+
+By default, `Minion will blacklist <https://github.com/mozilla/minion-backend/blob/master/etc/scan.json>`_ the following IP addresses from being scanned:
+
+.. code-block:: javascript
+
+    "blacklist": [
+        "10.0.0.0/8",
+        "127.0.0.0/8",
+        "172.16.0.0/12",
+        "192.168.0.0/16",
+        "169.254.0.0/16"
+    ]
+
+You can check the latest list at: .
+
+The effect of this is that Minion will refuse to scan any target site whose hostname falls in one of the ranges.
+For example, when Minion resolve the hostname ``localhost`` to ``127.0.0.1``, Minion will abort the scan because
+it is blacklisted.
+
+To configure the blacklist and whitelist, you can copy ``etc/scan.json`` into either ``/etc/minion/`` or ``~minion/.minion/``.  Note that the whitelist will override the blacklist, so in this example, IP addresses in 192.168.1.0/24 can be scanned, despite 192.168.0.0/16 being in the blacklist:
+
+.. code-block:: javascript
 
     {
-        'backend-api': {
-            'url': 'http://127.0.0.1:8383'
-        }
+        "whitelist": [
+            "192.168.1.0/24"
+        ],
+        "blacklist": [
+            "10.0.0.0/8",
+            "127.0.0.0/8",
+            "172.16.0.0/12",
+            "192.168.0.0/16",
+            "169.254.0.0/16"
+        ]
     }
 
-If the backend server is on a different server, then put this configuration in a file called ``frontend.json``
-at either ``/etc/minion`` or ``/home/user/.minion``.
+Any host that does not fall within the blacklist can be scanned.
+
+IP address blacklisting and whitelist also supports hostnames and hostname wildcards. For example:
+
+.. code-block:: javascript
+
+    "blacklist": [
+        "mozilla.com",
+        "*.mozilla.org"
+    ]
+
+
+In this configuration, we allowed scanning LAN network and localhost, but we removed the ability to scan mozilla.com and any subdomain of mozilla.org.  Note that if we wanted to block mozilla.org and subdomains, we would need entries for ``mozilla.org`` and ``*.mozilla.org``:
+
+.. code-block:: javascript
+
+    "blacklist": [
+        "mozilla.org",
+        "*.mozilla.org"
+    ]

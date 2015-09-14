@@ -1,34 +1,29 @@
 Developing Plugins
 ##################
 
-Minion plugins are Python classes that talks to a security aessement tool. This tool can be pure
-Python code inside the class doing HTTP header check (which is what the basic plugins
-do), or invoke an external executable binary. It can be as simple as a few lines of perl script
-or as complex as OWASP ZAP.
+Minion plugins are Python classes that talks to a security aessement tool. This tool can be pure Python code inside the class doing HTTP header check (which is what the basic plugins do), or invoke an external executable binary. It can be as simple as a few lines of Perl or as complex as `OWASP ZAP <https://github.com/zaproxy/zaproxy>`_.
+
+
 
 How Minion discovers new plugins
 ================================
 
-If we look at minion-zap-plugin's source code structure closely,
-we notice the layout of the package looks like this:
+If we look at minion-zap-plugin's source code structure closely, we notice the layout of the package looks minimally like this:
 
 .. code-block:: bash
 
     $ tree minion-zap-plugin
 
-    minion-zap-plugin/
-    |-- minion
-    |   |-- __init__.py
-    |   |-- __init__.pyc
-    |   `-- plugins
-    |       |-- __init__.py
-    |       `-- zap
-    |           |-- config.xml.example
-    |           |-- __init__.py
-    |           |-- reference.py
-    |           |-- zap_plugin.py
-    |-- README.rst
-    |-- setup.py
+    minion-zap-plugin
+    ├── minion
+    │   ├── __init__.py
+    │   └── plugins
+    │       ├── __init__.py
+    │       └── zap
+    │           ├── __init__.py
+    │           ├── reference.py
+    │           └── zap_plugin.py
+    └── setup.py
 
 Every plugin must fall under the ``minion.plugins`` package namespace.
 This is how the backend detects an existence of a plugin. The third level
@@ -36,21 +31,22 @@ in minion-zap-plugin is a directory called **zap**. This is the namespace
 of the plugin itself. In addition, the plugin class must be a subclass of
 ``AbstractPlugin`` and the following class member attributes:
 
-** ``PLUGIN_NAME``: the name of the plugin displayed to the frontend user
+* ``PLUGIN_NAME``: the name of the plugin displayed to the frontend user
 
-** ``PLUGIN_WEIGHT``: level of resource required to launch this plugin (light, medium, heavy)
+* ``PLUGIN_VERSION``: the release version of the plugin
+
+* ``PLUGIN_WEIGHT``: level of resource required to launch this plugin (light, medium, heavy)
 
 
-The registry code is found in `base.py <https://github.com/mozilla/minion-backend/blob/master/minion/backend/views/base.py>`_ under the views directory.
+The registry code is found in `base.py <https://github.com/mozilla/minion-backend/blob/master/minion/backend/views/base.py>`_.
 
-Whenever a plugin is installed, the backend server and all the celery workers must be restarted. 
+Whenever a plugin is installed, the backend server and all the celery workers must be restarted, unless the backend is run with the --reload option.
 
 
 Minion Plugin Classes
 =====================
 
-Now that you know how Minion discovers a new plugin,
-we can examine plugin classes.
+Now that you know how Minion discovers a new plugin, we can examine plugin classes.
 
 The first thing a plugin author needs to understand is the basics of
 Twisted. Minion's Task Engine uses `Twisted <http://twistedmatrix.com/trac/>`_
@@ -130,19 +126,16 @@ When we revisit the structure of a plugin package, it looks like this:
 
 .. code-block:: bash
 
-    minion-zap-plugin/
-    |-- minion
-    |   |-- __init__.py
-    |   |-- __init__.pyc
-    |   `-- plugins
-    |       |-- __init__.py
-    |       `-- zap
-    |           |-- config.xml.example
-    |           |-- __init__.py
-    |           |-- reference.py
-    |           |-- zap_plugin.py
-    |-- README.rst
-    |-- setup.py
+    minion-zap-plugin
+    ├── minion
+    │   ├── __init__.py
+    │   └── plugins
+    │       ├── __init__.py
+    │       └── zap
+    │           ├── __init__.py
+    │           ├── reference.py
+    │           └── zap_plugin.py
+    └── setup.py
 
 The third ``__init__.py`` should import the main plugin class. In the case of the zap plugin, it looks like this:
 
