@@ -1,5 +1,5 @@
-Using Frontend
-##############
+Using Minion
+############
 
 Minion's frontend is separate from the backend repository. Here we show how the frontend looks.
 
@@ -69,14 +69,11 @@ add sites and site url format is also restricted. As of 0.4 release, Minion can 
 ``http[s]://<subdomain>*.<domain>``. For example, while ``192.168.1.100``, ``foobar.com`` and ``foo.bar.com``
 are valid, the frontend will not accept paths so that ``foobar.com/project/`` is not acceptable.
 
-There is a long standing ticket (https://github.com/mozilla/minion-frontend/issues/100)
-to loosen up this restriction in the future release of Minion.
+There is a `longstanding ticket <https://github.com/mozilla/minion-frontend/issues/100>`_ to loosen up this restriction in the future release of Minion.
 
 .. note:: 
     
-    Also, since 0.3 release there is a hostname blacklist and whitelist mechanism added to Minion.
-    Hostname like 127.0.0.1 is blocked by Minion by default. To whitelist and/or blacklist what
-    hostname can be scanned, please refer to :ref:`whitelist_blacklist_hostname_label`.
+    Also, since 0.4 release there is a hostname blacklist and whitelist mechanism added to Minion. Hostnames like 127.0.0.1 are blocked by Minion by default. To whitelist and/or blacklist what hostnames can be scanned, please refer to :ref:`whitelist_blacklist_hostname_label`.
  
 .. image:: images/admin-sites.png
 
