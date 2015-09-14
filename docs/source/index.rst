@@ -16,7 +16,6 @@ Minion has limited scanning functionality built into itself. Instead, it relies 
    :hidden:
 
    install_guide
-   install_plugins
    configure_minion
    install_plugins
    using_minion
