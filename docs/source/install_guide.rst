@@ -116,6 +116,7 @@ Now we can checkout Minion and install it::
     # cd /opt/minion
     # git clone https://github.com/mozilla/minion-backend.git
     # source minion-env/bin/activate
+    (minion-env)# cd minion-backend
     (minion-env)# python setup.py develop
 
 To make sure that Minion starts when the system reboots, we need to install the Minion init script. We can also disable
