@@ -45,7 +45,7 @@ To configure the frontend, place your configuration in a file called ``frontend.
 
 - ``login``
 
-  - ``type``: the type of authentication to use; support types are currently ``persona``, which requires no configuration, and ``ldap``
+  - ``type``: the type of authentication to use; currently supported types are ``persona``, which requires no configuration, and ``ldap``
 
   - ``ldap``: the configuration for LDAP, if ``ldap`` is the chosen authentication method in ``login -> ``type`` 
 
@@ -85,7 +85,7 @@ Here is the `default configuration <https://github.com/mozilla/minion-backend/bl
         'email': {
             'host': '127.0.0.1',
             'port': 25,
-            'max_time_allowed': 604800 * 24 * 7 # 60 * 60 * 24 * 7 seconds
+            'max_time_allowed': 604800 # 7 * 24 * 60 * 60 (7 days)
         }
     }
 
