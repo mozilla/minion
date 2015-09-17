@@ -88,8 +88,9 @@ Two base classes for plugins are provided in the Minion backend to get developer
       several other extensions, especially those that wrap existing security tools.
 
 Besides the primitive basic plugins, Mozilla developers have created several
-plugins. See :ref:`community_plugins_label`.
+plugins:
 
+.. include:: include/plugin_repos.rst
 
 Task Engine
 -----------
