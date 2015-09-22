@@ -1,0 +1,45 @@
+{
+    "backend-api": {
+        "url": "http://minion-backend:8383"
+    },
+
+    "login": {
+        "type": "persona",
+
+        "ldap": {
+            "uri": "ldaps://ldap.server/",
+            "baseDN": "ou=test,dc=test_dc",
+
+            "emailAttribute": "mail",
+            "groupMembershipAttribute": "member",
+            "usernameAttribute": "uid",
+
+            "checkAuthorizedGroups": false,
+            "authorizedGroups": [
+                "ou=groupTest1,ou=test,dc=test_dc",
+                "ou=groupTest2,ou=test,dc=test_dc"
+            ]
+        },
+
+        "oauth": {
+            "providers": {
+                "facebook": {
+                    "client_id": "",
+                    "client_secret": ""
+                 },
+                "firefoxaccounts": {
+                    "client_id": "",
+                    "client_secret": ""
+                },
+                "github": {
+                    "client_id": "",
+                    "client_secret": ""
+                },
+                "google": {
+                    "client_id": "",
+                    "client_secret": ""
+                }
+            }
+        }
+    }
+}

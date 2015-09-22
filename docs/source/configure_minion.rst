@@ -10,32 +10,10 @@ As a convention, Minion will look in ``/etc/minion/`` and ``~minion/.minion`` fo
 Configure Minion Frontend
 =========================
 
-Here is the `default configuration <https://github.com/mozilla/minion-vm/blob/master/frontend.json>`_ for the Minion frontend server::
+Here is the `default configuration <https://github.com/mozilla/minion-vm/blob/master/frontend.json>`_ for the Minion frontend server:
 
-    {
-        "backend-api": {
-            "url": "http://minion-backend:8383"
-        },
-
-        "login": {
-            "type": "persona",
-
-            "ldap": {
-                "uri": "ldaps://ldap.server/",
-                "baseDN": "ou=test,dc=test_dc",
-
-                "emailAttribute": "mail",
-                "groupMembershipAttribute": "member",
-                "usernameAttribute": "uid",
-
-                "checkAuthorizedGroups": false,
-                "authorizedGroups": [
-                    "ou=groupTest1,ou=test,dc=test_dc",
-                    "ou=groupTest2,ou=test,dc=test_dc"
-                ]
-            }
-        }
-    }
+    .. literalinclude:: include/frontend.json
+        :language: javascript
 
 To configure the frontend, place your configuration in a file called ``frontend.json`` in either ``/etc/minion`` or ``/home/user/.minion``.
 
