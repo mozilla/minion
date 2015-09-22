@@ -45,9 +45,9 @@ To configure the frontend, place your configuration in a file called ``frontend.
 
 - ``login``
 
-  - ``type``: the type of authentication to use; currently supported types are ``persona``, which requires no configuration, and ``ldap``
+  - ``type``: the type of authentication to use; currently supported types are ``persona``, which requires no configuration, ``ldap``, and ``oauth``
 
-  - ``ldap``: the configuration for LDAP, if ``ldap`` is the chosen authentication method in ``login -> ``type`` 
+  - ``ldap``: the configuration for LDAP, if ``ldap`` is the chosen authentication method in ``login -> type`` 
 
     - ``uri``: URI to ldap server
 
@@ -62,6 +62,14 @@ To configure the frontend, place your configuration in a file called ``frontend.
     - ``checkAuthorizedGroups``: if true, require group membership in addition to valid user id
 
     - ``authorizedGroups``: list of groups where users are authorized to use Minion (if ``checkAuthorizedGroups`` is true)
+
+  - ``oauth``: the configuration for OAuth, if ``oauth` is the chosen authentication method is set in ``login -> type``; see :ref:`configure_minion_oauth_label`
+
+    - ``***``: supported providers are Facebook, Firefox Accounts, GitHub, and Google
+
+      - ``client_id``: client_id for the chosen provider
+
+      - ``client_secret``: client_secret for the chosen provider
 
 .. _configure_minion_backend_label:
 
@@ -115,6 +123,38 @@ To configure the backend, place your configuration in a file called ``backend.js
   - ``port``: port of mail server
 
   - ``max_time_allowed``: determines the life time of an invitation; by default it will remain valid for seven days.
+
+
+
+.. _configure_minion_oauth_label:
+
+Configuring OAuth
+=================
+
+Minion currently supports Facebook, Firefox Accounts (FxA), GitHub, and Google Accounts as OAuth providers.
+
+.. image:: images/login-oauth.png
+   :scale: 50%
+   :height: 468px
+   :width: 614px
+   :align: center
+
+To enable a provider, simply input the ``client_id`` and ``client_secret`` provided by them into ``frontend.json``. Once input, they should automatically appear as options on the login page. For example:
+
+.. code-block:: javascript
+
+    "facebook": {
+         "client_id": "1234567890101112",
+         "client_secret": "1c414b10981bfe1aa134874ac4daf780"
+     }
+
+When configuring the provider, each will have a unique callback URI corresponding to its provider name. The URI should look like:
+
+    ``<http or https>://<hostname>/ws/login/oauth/<provider>``
+
+For example:
+
+    ``https://minion.mozilla.org/ws/login/oauth/facebook``
 
 
 .. _whitelist_blacklist_hostname_label:
